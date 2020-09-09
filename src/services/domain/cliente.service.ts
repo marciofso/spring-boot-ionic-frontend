@@ -8,8 +8,8 @@ import { StorageService } from "../storage.service";
 @Injectable()
 export class ClienteService {
 
-    constructor(public http: HttpClient, public storage: StorageService) {    
-    }
+        constructor(public http: HttpClient, public storage: StorageService) {        
+        }
 
         findByEmail(email: String) : Observable<ClienteDTO> {
             return this.http.get<ClienteDTO>(`${API_CONFIG.baseUrl}/clientes/email?value=${email}`);
@@ -29,6 +29,5 @@ export class ClienteService {
                     responseType: 'text'
                 }
             );
-        }
-
+        }            
 }
