@@ -6,6 +6,7 @@ import { ClienteService } from '../../services/domain/cliente.service';
 import { API_CONFIG } from '../../config/api.config';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LoadingController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -20,13 +21,16 @@ export class ProfilePage {
   email: string;
   profileImage;
 
+//Novo
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
     public storage: StorageService,
     public clienteService: ClienteService,
     public camera: Camera,
-    public sanitizer: DomSanitizer) {
+    public sanitizer: DomSanitizer, 
+    public loadingCtrl: LoadingController) {
 
       this.profileImage = 'assets/imgs/avatar-blank.png';
   }
@@ -117,18 +121,33 @@ export class ProfilePage {
     });
   }
 
+//Novo
+
   sendPicture() {
+    let loader = this.presentLoading();
     this.clienteService.uploadPicture(this.picture)
-       .subscribe(response => {
+    .subscribe(response => {
          this.picture = null;
          this.getImageIfExists();
+         loader.dismiss();
        },
        error => { 
-       });
+        loader.dismiss();
+      });
   }
 
 cancel() {
   this.picture = null;
+}
+
+//Novo
+
+presentLoading() {
+  let loader = this.loadingCtrl.create({
+    content: "Aguarde..."
+  });
+  loader.present();
+  return loader;
 }
 
 }
